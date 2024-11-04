@@ -181,7 +181,6 @@ public:
         }
     }
 
-    // TODO: return smartPtr (better unique)
     UnqPtr<LinkedListSmart<T>> Concat(LinkedListSmart<T>* list) const
     {
         UnqPtr<LinkedListSmart<T>> newList(new LinkedListSmart<T>());

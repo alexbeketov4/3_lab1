@@ -82,7 +82,12 @@ public:
         }
     }
 
-    T* get() const
+    const T* get() const
+    {
+        return ptr;
+    }
+
+    T* get()
     {
         return ptr;
     }

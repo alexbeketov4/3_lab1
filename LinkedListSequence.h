@@ -8,6 +8,8 @@ class LinkedListSequence : public Sequence<T>
 {
 private:
     UnqPtr<LinkedListSmart<T>> list;
+
+    LinkedListSequence(UnqPtr<LinkedListSmart<T>>&& other) : list(std::move(other)) {}
 public:
     LinkedListSequence() : list(new LinkedListSmart<T>()) {}
     LinkedListSequence(const T* items, int count) : list(new LinkedListSmart<T>(items, count)) {}
@@ -35,7 +37,7 @@ public:
 
     UnqPtr<Sequence<T>> GetSubsequence(int startIndex, int endIndex) const override
     {
-        return UnqPtr<Sequence<T>>(new LinkedListSequence<T>(*(list->GetSubsequence(startIndex, endIndex))));
+        return UnqPtr<Sequence<T>>(new LinkedListSequence<T>(std::move(list->GetSubsequence(startIndex, endIndex))));
     }
 
     void Append(const T& item) override
@@ -53,13 +55,13 @@ public:
         list->InsertAt(item, index);
     }
 
-    UnqPtr<Sequence<T>> Concat(const Sequence<T>* other) const override
+    UnqPtr<Sequence<T>> Concat(Sequence<T>* other) const override
     {
         LinkedListSmart<T> resultList(*list);
         for (int i = 0; i < other->GetLength(); i++)
         {
             resultList.Append(other->Get(i));
         }
-        return UnqPtr<Sequence<T>>(new LinkedListSequence<T>(resultList));
+        return UnqPtr<Sequence<T>>(new LinkedListSequence<T>(std::move(resultList)));
     }
 };
