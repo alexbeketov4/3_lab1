@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits>
 template <typename T>
 class UnqPtr
 {
@@ -90,5 +91,12 @@ public:
     T* get()
     {
         return ptr;
+    }
+
+    template <typename U>
+    operator UnqPtr<U>()&& 
+    {
+        static_assert(std::is_base_of<U, T>::value, "Invalid cast: T must be derived from U");
+        return UnqPtr<U>(static_cast<U*>(ptr));
     }
 };

@@ -276,7 +276,10 @@ void Test_of_InsertAt_LinkedListSequence()
 void Test_of_ConcatLinkedListSequence()
 {
 	LinkedListSequence<int>list(array1, 5);
-	UnqPtr<Sequence<int>> con_list = list.Concat(&list);
+	LinkedListSequence<int>list5(array1, 5);
+	UnqPtr<Sequence<int>> con_list = list.Concat(UnqPtr<Sequence<int>>(new LinkedListSequence<int>(std::move(list5))));
+
+	//UnqPtr<Sequence<int>> con_list = list.Concat(&list);
 	assert(con_list->GetLength() == 10);
 
 	for (int i = 0; i != 10; i++)
@@ -285,7 +288,8 @@ void Test_of_ConcatLinkedListSequence()
 	}
 
 	LinkedListSequence<int>list1;
-	UnqPtr<Sequence<int>> con_list1 = list.Concat(&list1);
+	UnqPtr<Sequence<int>> con_list1 = list.Concat(UnqPtr<Sequence<int>>(new LinkedListSequence<int>(std::move(list1))));
+	//UnqPtr<Sequence<int>> con_list1 = list.Concat(&list1);
 	for (int i = 0; i != 5; i++)
 	{
 		assert(array1[i] == con_list1->Get(i));

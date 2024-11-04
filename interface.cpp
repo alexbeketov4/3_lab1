@@ -381,7 +381,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         else if (wmId == IDC_CONCAT_BUTTON) {
                 if (sequence && otherSequence) {
                     try {
-                        auto concatenatedSequence = sequence->Concat(otherSequence.get());
+                        //auto concatenatedSequence = sequence->Concat(otherSequence);
+                        auto concatenatedSequence = sequence->Concat(UnqPtr<Sequence<int>>(std::move(otherSequence)));
                         DisplaySubSequence(hWnd, concatenatedSequence.get());
                     }
                     catch (const char* error_message) {

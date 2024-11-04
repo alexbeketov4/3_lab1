@@ -55,7 +55,7 @@ public:
         list->InsertAt(item, index);
     }
 
-    UnqPtr<Sequence<T>> Concat(Sequence<T>* other) const override
+    UnqPtr<Sequence<T>> Concat(UnqPtr<Sequence<T>> other) const override
     {
         LinkedListSmart<T> resultList(*list);
         for (int i = 0; i < other->GetLength(); i++)

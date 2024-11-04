@@ -19,7 +19,7 @@ public:
 
     virtual void InsertAt(const T& item, int index) = 0;
 
-    virtual UnqPtr<Sequence<T>> Concat(Sequence<T>* other) const = 0;
+    virtual UnqPtr<Sequence<T>> Concat(UnqPtr<Sequence<T>> other) const = 0;
 
     virtual ~Sequence() {}
 };
