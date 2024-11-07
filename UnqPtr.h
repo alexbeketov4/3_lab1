@@ -7,7 +7,6 @@ private:
     T* ptr;
 
 public:
-
     UnqPtr() : ptr(nullptr) {}
 
     explicit UnqPtr(T* p) : ptr(p) {}

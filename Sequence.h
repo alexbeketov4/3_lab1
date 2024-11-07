@@ -3,7 +3,7 @@ template<class T>
 class Sequence
 {
 public:
-    virtual int GetLength() const = 0;
+    virtual size_t GetLength() const = 0;
 
     virtual T GetFirst() const = 0;
 
@@ -19,7 +19,9 @@ public:
 
     virtual void InsertAt(const T& item, int index) = 0;
 
-    virtual UnqPtr<Sequence<T>> Concat(UnqPtr<Sequence<T>> other) const = 0;
+    virtual UnqPtr<Sequence<T>> Concat(const UnqPtr<Sequence<T>>& other) const = 0;
+
+    virtual const UnqPtr<LinkedListSmart<T>>& GetLinkedList() const = 0;
 
     virtual ~Sequence() {}
 };

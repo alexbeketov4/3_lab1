@@ -10,12 +10,18 @@ private:
     UnqPtr<LinkedListSmart<T>> list;
 
     LinkedListSequence(UnqPtr<LinkedListSmart<T>>&& other) : list(std::move(other)) {}
+
+    const UnqPtr<LinkedListSmart<T>>& GetLinkedList() const
+    {
+        return list;
+    }
+
 public:
     LinkedListSequence() : list(new LinkedListSmart<T>()) {}
     LinkedListSequence(const T* items, int count) : list(new LinkedListSmart<T>(items, count)) {}
     LinkedListSequence(const LinkedListSmart <T>& other) : list(new LinkedListSmart<T>(other)) {}
 
-    int GetLength() const override
+    size_t GetLength() const override
     {
         return list->GetLength();
     }
@@ -55,13 +61,9 @@ public:
         list->InsertAt(item, index);
     }
 
-    UnqPtr<Sequence<T>> Concat(UnqPtr<Sequence<T>> other) const override
+    UnqPtr<Sequence<T>> Concat(const UnqPtr<Sequence<T>>& other) const override
     {
-        LinkedListSmart<T> resultList(*list);
-        for (int i = 0; i < other->GetLength(); i++)
-        {
-            resultList.Append(other->Get(i));
-        }
+        UnqPtr<LinkedListSmart<T>> resultList = list->Concat(other->GetLinkedList());
         return UnqPtr<Sequence<T>>(new LinkedListSequence<T>(std::move(resultList)));
     }
 };

@@ -136,20 +136,15 @@ void Test_of_InsertAt_LinkedListSmart()
 
 void Test_of_Concat_LinkedListSmart()
 {
-	LinkedListSmart<int>list(array1, 5);
-	LinkedListSmart<int> con_list = *(list.Concat(&list));
-	assert(con_list.GetLength() == 10);
+	UnqPtr<LinkedListSmart<int>>list(new LinkedListSmart<int>(array1, 5));
+	UnqPtr<LinkedListSmart<int>>list1(new LinkedListSmart<int>(array1, 5));
+	
+	UnqPtr<LinkedListSmart<int>> con_list = list->Concat(std::move(list1));
+	assert(con_list->GetLength() == 10);
 
 	for (int i = 0; i != 10; i++)
 	{
-		assert(array6[i] == con_list.Get(i));
-	}
-
-	LinkedListSmart<int>list1;
-	LinkedListSmart<int> con_list1 = *(list.Concat(&list1));
-	for (int i = 0; i != 5; i++)
-	{
-		assert(array1[i] == con_list1.Get(i));
+		assert(array6[i] == con_list->Get(i));
 	}
 }
 

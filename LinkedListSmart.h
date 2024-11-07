@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "ShrdPtr.h"
 #include "UnqPtr.h"
 #include <stdexcept>
@@ -36,6 +35,8 @@ public:
             current = current->next;
         }
     }
+
+    ~LinkedListSmart() = default;
 
     LinkedListSmart(const LinkedListSmart<T>& other)
     {
@@ -181,21 +182,25 @@ public:
         }
     }
 
-    UnqPtr<LinkedListSmart<T>> Concat(LinkedListSmart<T>* list) const
+    UnqPtr<LinkedListSmart<T>> Concat(const UnqPtr<LinkedListSmart<T>>& list) const
     {
-        UnqPtr<LinkedListSmart<T>> newList(new LinkedListSmart<T>());
-        ShrdPtr<Node> current = head;
+        UnqPtr<LinkedListSmart<T>> newList(new LinkedListSmart<T>(*this));
 
-        while (current)
+        ShrdPtr<Node> lastNode = newList->head;
+        while (lastNode->next) 
         {
-            newList->Append(current->data);
+            lastNode = lastNode->next;
+        }
+
+        ShrdPtr<Node> current = list->head;
+        while (current) 
+        {
+            lastNode->next = ShrdPtr<Node>(new Node(current->data));
+            lastNode = lastNode->next;
             current = current->next;
         }
 
-        for (int i = 0; i < list->GetLength(); i++)
-        {
-            newList->Append(list->Get(i));
-        }
+        newList->length = this->length + list->GetLength();
 
         return newList;
     }

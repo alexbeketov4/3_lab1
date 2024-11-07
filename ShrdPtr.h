@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits>
 template <typename T>
 class ShrdPtr
 {
@@ -36,13 +37,8 @@ public:
         : ptr(p), ref_count(p ? new size_t(1) : nullptr) {}
 
     ShrdPtr(const ShrdPtr<T>& other)
-        : ptr(other.ptr), ref_count(other.ref_count) {
-        add_ref();
-    }
-
-    template <typename U>
-    ShrdPtr(const ShrdPtr<U>& other)
-        : ptr(other.ptr), ref_count(other.ref_count) {
+        : ptr(other.ptr), ref_count(other.ref_count) 
+    {
         add_ref();
     }
 
@@ -59,13 +55,10 @@ public:
     }
 
     template <typename U>
-    ShrdPtr<T>& operator=(const ShrdPtr<U>& other)
+    operator ShrdPtr<U>() const
     {
-        release();
-        ptr = other.ptr;
-        ref_count = other.ref_count;
-        add_ref();
-        return *this;
+        static_assert(std::is_base_of<U, T>::value, "T must be derived from U");
+        return ShrdPtr<U>(ptr, ref_count);
     }
 
     ShrdPtr<T>& operator=(std::nullptr_t)
@@ -131,3 +124,4 @@ public:
         return ref_count ? *ref_count : 0;
     }
 };
+
